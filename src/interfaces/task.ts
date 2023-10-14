@@ -1,6 +1,6 @@
 export interface Task {
 	id: number;
 	title: string;
-	dueDate: Date;
+	dueTime: Date;
 	category: string;
 }
