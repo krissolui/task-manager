@@ -47,7 +47,9 @@ const TaskForm = ({ addTask }: ITaskFormProps) => {
 
 				<select id="category" {...formik.getFieldProps('category')}>
 					{categories.map((category) => (
-						<option value={category}>{category}</option>
+						<option key={category} value={category}>
+							{category}
+						</option>
 					))}
 				</select>
 

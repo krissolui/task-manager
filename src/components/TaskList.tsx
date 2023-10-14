@@ -24,7 +24,7 @@ const TaskList = ({ tasks, completeTask, deleteTask }: ITaskListProps) => {
 					</thead>
 					<tbody>
 						{tasks.map(({ id, title, dueTime, category }) => (
-							<tr>
+							<tr key={id}>
 								<td>{title}</td>
 								<td>{category}</td>
 								<td>{dueTime.toLocaleString()}</td>
