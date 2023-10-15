@@ -10,10 +10,12 @@ const validationSchema = yup.object({
 		.string()
 		.oneOf(categories, `Category must be one of ${categories.join(', ')}`)
 		.required('Category is required'),
-	dueTime: yup
-		.date()
-		.min(new Date(), 'Due time must not be in the past')
-		.required('Due time is required'),
+	dueTime: yup.lazy(() =>
+		yup
+			.date()
+			.min(new Date(), 'Due time must not be in the past')
+			.required('Due time is required')
+	),
 });
 
 export default validationSchema;
