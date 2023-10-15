@@ -13,24 +13,31 @@ const TaskList = ({ tasks, completeTask, deleteTask }: ITaskListProps) => {
 		<div>
 			{tasks.length === 0 && <div>No task</div>}
 			{tasks.length > 0 && (
-				<Table>
+				<Table className="shadow">
 					<thead>
 						<tr>
-							<th>Title</th>
-							<th>Category</th>
-							<th>Due Time</th>
-							<th>Actions</th>
+							<th className="bg-dark-subtle">Title</th>
+							<th className="bg-dark-subtle">Category</th>
+							<th className="bg-dark-subtle">Due Time</th>
+							<th className="bg-dark-subtle">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
-						{tasks.map((task) => (
-							<TaskItem
-								key={task.id}
-								task={task}
-								completeTask={completeTask}
-								deleteTask={deleteTask}
-							/>
-						))}
+						{tasks
+							.sort((a, b) => {
+								return (
+									new Date(a.dueTime).getTime() -
+									new Date(b.dueTime).getTime()
+								);
+							})
+							.map((task) => (
+								<TaskItem
+									key={task.id}
+									task={task}
+									completeTask={completeTask}
+									deleteTask={deleteTask}
+								/>
+							))}
 					</tbody>
 				</Table>
 			)}

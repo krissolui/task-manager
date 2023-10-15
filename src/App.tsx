@@ -55,14 +55,16 @@ function App() {
 	};
 
 	return (
-		<>
-			<TaskForm addTask={addTask} />
-			<TaskList
-				tasks={tasks}
-				completeTask={completeTask}
-				deleteTask={deleteTask}
-			/>
-		</>
+		<div className="container p-2 my-5">
+			<div className="row justify-content-center row-gap-5">
+				<TaskForm addTask={addTask} />
+				<TaskList
+					tasks={tasks}
+					completeTask={completeTask}
+					deleteTask={deleteTask}
+				/>
+			</div>
+		</div>
 	);
 }
 

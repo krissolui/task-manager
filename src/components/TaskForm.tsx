@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import { useFormik } from 'formik';
 import validationSchema from '../utils/validator';
 import categories from '../constants/categories';
+import Form from 'react-bootstrap/Form';
 
 interface ITaskFormProps {
 	addTask: (task: FormFields) => void;
@@ -18,7 +19,7 @@ const TaskForm = ({ addTask }: ITaskFormProps) => {
 
 	const initialValues: FormFields = {
 		title: '',
-		category: categories[0],
+		category: '',
 		dueTime: new Date(Date.now() - timezoneOffset)
 			.toISOString()
 			.slice(0, 16),
@@ -40,43 +41,78 @@ const TaskForm = ({ addTask }: ITaskFormProps) => {
 		},
 	});
 
+	const titleError = formik.touched.title && formik.errors.title;
+	const categoryError = formik.touched.category && formik.errors.category;
+	const dueTimeError = formik.touched.dueTime && formik.errors.dueTime;
+
 	return (
 		<div>
-			<form onSubmit={formik.handleSubmit}>
-				<input
-					type="text"
-					id="title"
-					{...formik.getFieldProps('title')}
-				/>
+			<Form
+				className="d-flex flex-column gap-2  mb-2"
+				onSubmit={formik.handleSubmit}
+			>
+				<div className="d-flex flex-column flex-sm-row gap-2">
+					<Form.Group className="w-100 w-sm-50">
+						<Form.Control
+							className={`${titleError && 'border-danger'}`}
+							type="text"
+							id="title"
+							placeholder="Title"
+							{...formik.getFieldProps('title')}
+						/>
+					</Form.Group>
 
-				<select id="category" {...formik.getFieldProps('category')}>
-					{categories.map((category) => (
-						<option key={category} value={category}>
-							{category}
-						</option>
-					))}
-				</select>
+					<Form.Group className="w-100 w-sm-50">
+						<Form.Select
+							className={`${categoryError && 'border-danger'}`}
+							id="category"
+							{...formik.getFieldProps('category')}
+						>
+							<option>Choose Category</option>
+							{categories.map((category) => (
+								<option key={category} value={category}>
+									{category}
+								</option>
+							))}
+						</Form.Select>
+					</Form.Group>
+				</div>
 
-				<input
-					type="datetime-local"
-					id="dueTime"
-					{...formik.getFieldProps('dueTime')}
-				/>
+				<div className="d-flex flex-column flex-sm-row gap-2">
+					<Form.Group className="d-flex d-sm-inline-flex gap-2 w-100">
+						<Form.Label className="m-0 w-25 text-center align-self-center">
+							Due Time:
+						</Form.Label>
+						<Form.Control
+							className={`w-75 ${
+								dueTimeError && 'border-danger'
+							}`}
+							type="datetime-local"
+							id="dueTime"
+							{...formik.getFieldProps('dueTime')}
+						/>
+					</Form.Group>
 
-				<Button type="submit" disabled={formik.isSubmitting}>
-					Submit
-				</Button>
-
-				{formik.touched.title && formik.errors.title ? (
-					<div>{formik.errors.title}</div>
-				) : null}
-				{formik.touched.category && formik.errors.category ? (
-					<div>{formik.errors.category}</div>
-				) : null}
-				{formik.touched.dueTime && formik.errors.dueTime ? (
-					<div>{String(formik.errors.dueTime)}</div>
-				) : null}
-			</form>
+					<Button
+						className="w-sm-25"
+						type="submit"
+						disabled={formik.isSubmitting}
+					>
+						Add Task
+					</Button>
+				</div>
+			</Form>
+			{titleError && (
+				<div className="text-danger">! {formik.errors.title}</div>
+			)}
+			{categoryError && (
+				<div className="text-danger">! {formik.errors.category}</div>
+			)}
+			{dueTimeError && (
+				<div className="text-danger">
+					! {String(formik.errors.dueTime)}
+				</div>
+			)}
 		</div>
 	);
 };
