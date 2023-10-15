@@ -4,6 +4,7 @@ import TaskList from './components/TaskList';
 import { Task } from './interfaces/task';
 import TaskForm, { FormFields } from './components/TaskForm';
 import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 const isLocalStorageAvailable = (): boolean => {
 	const test = 'test' + new Date().toISOString();
@@ -25,6 +26,7 @@ const getStoredTasks = (): Task[] => {
 
 function App() {
 	const [tasks, setTasks] = useState<Task[]>(getStoredTasks);
+	const [showForm, setShowForm] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (!isLocalStorageAvailable()) return;
@@ -54,10 +56,31 @@ function App() {
 		setTasks(newTasks);
 	};
 
+	const toggleShowForm = () => {
+		setShowForm(!showForm);
+	};
+
 	return (
 		<div className="container p-2 my-5">
 			<div className="row justify-content-center row-gap-5">
-				<TaskForm addTask={addTask} />
+				{showForm ? (
+					<div className="container">
+						<Button
+							className="btn-danger w-100"
+							onClick={toggleShowForm}
+						>
+							Close Form
+						</Button>
+					</div>
+				) : (
+					<div className="container">
+						<Button className="w-100" onClick={toggleShowForm}>
+							Add Task
+						</Button>
+					</div>
+				)}
+
+				{showForm && <TaskForm addTask={addTask} />}
 				<TaskList
 					tasks={tasks}
 					completeTask={completeTask}
