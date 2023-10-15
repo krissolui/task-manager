@@ -31,13 +31,9 @@ function App() {
 		window.localStorage.setItem('tasks', JSON.stringify(tasks));
 	}, [tasks]);
 
-	const addTask = ({ title, category, dueTime }: FormFields) => {
+	const addTask = (task: FormFields) => {
 		const id = (tasks.slice(-1)[0]?.id ?? 0) + 1;
-
-		setTasks([
-			...tasks,
-			{ id, title, category, dueTime: new Date(dueTime) },
-		]);
+		setTasks([...tasks, { id, ...task }]);
 	};
 
 	const completeTask = (id: number) => {

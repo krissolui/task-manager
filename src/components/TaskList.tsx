@@ -1,6 +1,6 @@
-import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import { Task } from '../interfaces/task';
+import TaskItem from './TaskItem';
 
 interface ITaskListProps {
 	tasks: Task[];
@@ -23,20 +23,13 @@ const TaskList = ({ tasks, completeTask, deleteTask }: ITaskListProps) => {
 						</tr>
 					</thead>
 					<tbody>
-						{tasks.map(({ id, title, dueTime, category }) => (
-							<tr key={id}>
-								<td>{title}</td>
-								<td>{category}</td>
-								<td>{dueTime.toLocaleString()}</td>
-								<td>
-									<Button onClick={() => completeTask(id)}>
-										&#10003;
-									</Button>
-									<Button onClick={() => deleteTask(id)}>
-										X
-									</Button>
-								</td>
-							</tr>
+						{tasks.map((task) => (
+							<TaskItem
+								key={task.id}
+								task={task}
+								completeTask={completeTask}
+								deleteTask={deleteTask}
+							/>
 						))}
 					</tbody>
 				</Table>

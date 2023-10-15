@@ -27,9 +27,13 @@ const TaskForm = ({ addTask }: ITaskFormProps) => {
 	const formik = useFormik<FormFields>({
 		initialValues,
 		validationSchema,
-		onSubmit: (values, { setSubmitting }) => {
+		onSubmit: ({ title, category, dueTime }, { setSubmitting }) => {
 			setTimeout(() => {
-				addTask(values);
+				addTask({
+					title,
+					category,
+					dueTime,
+				});
 				setSubmitting(false);
 				formik.resetForm();
 			}, 200);
